@@ -1,0 +1,763 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is a sample Petstore server.  You can find
+    out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  version: 1.0.1
+  title: Texi System
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/T42994/Taxi/1.0.0
+tags:
+  - name: Payment
+    description: Payment Service
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: Track
+    description: Tracking Service
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: Vehicle
+    description: Vehicle Service
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: Message
+    description: Messaging Service
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: Location
+    description: Location Service
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: Customer
+    description: Customer Service
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: Feedback
+    description: Feedback Service
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: Promotion
+    description: Promotion Service
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: Driver
+    description: Driver Service
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+paths:
+  '/vehicle':
+    post:
+      tags:
+        - Vehicle
+      summary: Create new vehicle.
+      operationId: addVehicle
+      requestBody:
+        description: ""
+        content:
+          JSON:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+        required: true
+      responses:
+        "201":
+          description: add data successful!
+          content: {}
+      x-codegen-request-body-name: body
+  '/vehicle/{vehicleID}':
+    get:
+      tags:
+        - Vehicle
+      summary: Get vehicle by id.
+      operationId: getVehicleById
+      parameters: 
+        - name: vehicleID
+          in: path
+          description: put ID for search of vehicle
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: success
+          content:
+            JSON:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+    delete:
+      tags:
+        - Vehicle
+      summary: Remove vehicle by id.
+      operationId: removeVehicleById
+      parameters: 
+        - name: vehicleID
+          in: path
+          description: remove vehicle
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: success
+          content:
+            JSON:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+    put:
+      tags:
+        - Vehicle
+      summary: Update vehicle by id.
+      operationId: updateVehicleById
+      parameters: 
+        - name: vehicleID
+          in: path
+          description: update vehicle
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: update successful!
+  '/tracking/{driverId}':
+    get:
+      tags:
+        - Tracking
+      summary: Find tracking by ID
+      description: return a track by id
+      operationId: getTrackById
+      parameters:
+        - name: driverId
+          in: path
+          description: id of driver
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                $ref: '#/components/schemas/Tracking'
+  /Feedback:
+    post:
+      tags:
+        - Feedback
+      summary: add Feedback
+      operationId: addFeedback
+      requestBody:
+        description: create feedback
+        content:
+          JSON:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                feedbackID:
+                  type: integer
+                  format: int64
+                comment:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: success
+          content: {}
+          
+  '/Feedback/{feedbackID}':
+    get:
+      tags:
+        - Feedback
+      summary: get Feedback
+      operationId: getFeedbackByID
+      parameters:
+        - name: feedbackID
+          in: path
+          description: ID of Feedback to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+  /Promotion:
+    post:
+      tags:
+        - Promotion
+      summary: add Promotion
+      operationId: addPromotion
+      requestBody:
+        description: create Promotion
+        content:
+          JSON:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                feedbackID:
+                  type: integer
+                  format: int64
+                comment:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: success
+          content: {}
+  '/Promotion/{promotionID}':
+    get:
+      tags:
+        - Promotion
+      summary: get Promotion
+      operationId: promotionID
+      parameters:
+        - name: promotionID
+          in: path
+          description: ID of Promotion to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                $ref: '#/components/schemas/Promotion'    
+    put:
+      tags:
+        - Promotion
+      summary: edit Promotion
+      operationId: editPromotionID
+      parameters:
+        - name: promotionID
+          in: path
+          description: ID of Promotion to return
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: info that u want to edit
+        content:
+          JSON:
+            schema:
+              $ref: '#/components/schemas/PromotionEdit'
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                $ref: '#/components/schemas/Promotion'
+    delete:
+      tags:
+        - Promotion
+      summary: delete Promotion
+      parameters:
+        - name: promotionID
+          in: path
+          description: ID of Promotion to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content: {}
+  /Driver:
+    post:
+      tags:
+        - Driver
+      summary: add Driver
+      operationId: addDriver
+      requestBody:
+        description: create Driver
+        content:
+          JSON:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                driverID:
+                  type: integer
+                  format: int64
+                dFirstName:
+                  type: string
+                dLastName:
+                  type: string
+                dGender:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: success
+          content: {}
+  '/Driver/{driverID}':
+    get:
+      tags:
+        - Driver
+      summary: get Driver
+      operationId: driverID
+      parameters:
+        - name: driverID
+          in: path
+          description: ID of Driver to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                $ref: '#/components/schemas/Driver'
+    put:
+      tags:
+        - Driver
+      summary: edit Driver
+      operationId: editDriverID
+      parameters:
+        - name: driverID
+          in: path
+          description: ID of Driver to return
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: info that u want to edit
+        content:
+          JSON:
+            schema:
+              $ref: '#/components/schemas/DriverEdit'
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                $ref: '#/components/schemas/Driver'
+    delete:
+      tags:
+        - Driver
+      summary: delete Driver
+      parameters:
+        - name: driverID
+          in: path
+          description: ID of Driver to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content: {}
+  '/message/send/{driverId}':
+    post:
+      tags:
+        - Message
+      summary: Send Message to Driver
+      operationId: sendToDriver
+      parameters:
+        - name: driverId
+          in: path
+          description: Id of Driver to Send Message
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description:  Message Want To Send
+        content:
+          JSON:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: success
+          content: {}
+  '/message/send/{customerId}':
+    post:
+      tags:
+        - Message
+      summary: Send Message to Customer
+      operationId: sendToCus
+      parameters:
+        - name: customerId
+          in: path
+          description: Id of Customer to Send Message
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Message Want To Send
+        content:
+          JSON:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: success
+          content: {}
+  '/message/read/{driverId}':
+    get:
+      tags:
+        - Message
+      summary: Receive Message from Driver
+      operationId: readFromDriver
+      parameters:
+        - name: driverId
+          in: path
+          description: Id of Driver to Read Message
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  '/message/read/{customerId}':
+    get:
+      tags:
+        - Message
+      summary: Receive Message from Customer
+      operationId: readFromCus
+      parameters:
+        - name: customerId
+          in: path
+          description: Id of Customer to Read Message
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  '/message/delete/{driverId}':
+    delete:
+      tags:
+        - Message
+      summary: Driver Delete Message
+      operationId: driverDelMessage
+      parameters:
+        - name: driverId
+          in: path
+          description: Id of Customer to Read Message
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: delete
+  '/message/delete/{customerId}':
+    delete:
+      tags:
+        - Message
+      summary: Customer Delete Message
+      operationId: cusDelMessage
+      parameters:
+        - name: customerId
+          in: path
+          description: Id of Customer to Read Message
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: delete
+  '/location/{locationName}':
+    get:
+      tags:
+        - Location
+      summary: Get Location By Name
+      operationId: getLocationByName
+      parameters:
+        - name: locationName
+          in: path
+          description: Name of Location to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                type: object
+                properties:
+                  longitude:
+                    type: integer
+                    format: int64
+                  latitude:
+                    type: integer
+                    format: int64
+  /customer/create:
+    post:
+      tags:
+        - Customer
+      summary: Create Customer
+      operationId: addCustomer
+      requestBody:
+        description: Object Velue To Create Customer
+        content:
+          JSON:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: success
+          content: {}
+  '/customer/{customerId}':
+    get:
+      tags:
+        - Customer
+      summary: Get Customer By Id
+      operationId: getCusById
+      parameters:
+        - name: customerId
+          in: path
+          description: ID of Customer to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                type: object
+                properties:
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  username:
+                    type: string
+                  password:
+                    type: string
+                  email:
+                    type: string
+                  phoneNumber:
+                    type: integer
+                    format: int64
+  '/customer/edit/{customerId}':
+    put:
+      tags:
+        - Customer
+      summary: Edit Customer By Id
+      operationId: editCusById
+      parameters:
+        - name: customerId
+          in: path
+          description: ID of Customer to return
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Edit info
+        content:
+          JSON:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+                phoneNumber:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                $ref: '#/components/schemas/Customer'
+components:
+  schemas:
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        vehicleID:
+          type: integer
+          format: int32
+        cartype:
+          type: string
+        certtype:
+          type: string
+        vehicle_model: #รุ่นของรถ
+          type: string
+        vehicle_number:
+          type: string
+        vehicle_color:
+          type: string
+        status:
+          type: boolean
+    Tracking:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longtitude:
+          type: number
+          format: double
+
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        feedbackID:
+          type: integer
+          format: int64
+        comment:
+          type: string
+      xml:
+        name: Feedback
+
+
+    Promotion:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        promotionID:
+          type: integer
+          format: int64
+        pName:
+          type: string
+        pDescribe:
+          type: string
+        pDiscount:
+          type: integer
+          format: int64
+      xml:
+        name: Promotion
+
+
+    PromotionEdit:
+      type: object
+      properties:
+        pName:
+          type: string
+        pDescribe:
+          type: string
+        pDiscount:
+          type: integer
+          format: int64
+
+
+    Driver:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        driverID:
+          type: integer
+          format: int64
+        dFirstName:
+          type: string
+        dLastName:
+          type: string
+        dGender:
+          type: string
+      xml:
+        name: Driver
+
+    DriverEdit:
+      type: object
+      properties:
+        dFirstName:
+          type: string
+        dLastName:
+          type: string
+          
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        driverId:
+          type: integer
+          format: int64
+        customerId:
+          type: integer
+          format: int64
+        message:
+          type: string
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: integer
+          format: int64
