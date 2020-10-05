@@ -849,6 +849,9 @@ components:
         price:
           type: integer
           format: int32
+        promotionId:
+          type: integer
+          format: int32
         date:
           type: string
         status:
