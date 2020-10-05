@@ -1,9 +1,18 @@
 openapi: 3.0.0
 info:
   description: |
-    Taxi syste,
+    This is a sample Petstore server.  You can find
+    out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
   version: 1.0.1
   title: Texi System
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
@@ -11,11 +20,6 @@ servers:
 tags:
   - name: Payment
     description: Payment Service
-    externalDocs:
-      description: Find out more
-      url: 'http://swagger.io'
-  - name: Track
-    description: Tracking Service
     externalDocs:
       description: Find out more
       url: 'http://swagger.io'
@@ -372,7 +376,7 @@ paths:
         '200':
           description: success
           content: {}
-  '/message/send/{driverId}':
+  '/message/{driverId}':
     post:
       tags:
         - Message
@@ -395,30 +399,6 @@ paths:
         '200':
           description: success
           content: {}
-  '/message/send/{customerId}':
-    post:
-      tags:
-        - Message
-      summary: Send Message to Customer
-      operationId: sendToCus
-      parameters:
-        - name: customerId
-          in: path
-          description: Id of Customer to Send Message
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: Message Want To Send
-        content:
-          JSON:
-            schema:
-              $ref: '#/components/schemas/Message'
-      responses:
-        '200':
-          description: success
-          content: {}
-  '/message/read/{driverId}':
     get:
       tags:
         - Message
@@ -441,7 +421,44 @@ paths:
                 properties:
                   message:
                     type: string
-  '/message/read/{customerId}':
+    delete:
+      tags:
+        - Message
+      summary: Driver Delete Message
+      operationId: driverDelMessage
+      parameters:
+        - name: driverId
+          in: path
+          description: Id of Customer to Read Message
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: delete
+  '/message/{customerId}':
+    post:
+      tags:
+        - Message
+      summary: Send Message to Customer
+      operationId: sendToCus
+      parameters:
+        - name: customerId
+          in: path
+          description: Id of Customer to Send Message
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Message Want To Send
+        content:
+          JSON:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: success
+          content: {}
     get:
       tags:
         - Message
@@ -464,23 +481,6 @@ paths:
                 properties:
                   message:
                     type: string
-  '/message/delete/{driverId}':
-    delete:
-      tags:
-        - Message
-      summary: Driver Delete Message
-      operationId: driverDelMessage
-      parameters:
-        - name: driverId
-          in: path
-          description: Id of Customer to Read Message
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: delete
-  '/message/delete/{customerId}':
     delete:
       tags:
         - Message
@@ -523,6 +523,34 @@ paths:
                   latitude:
                     type: integer
                     format: int64
+  '/location/{locationId}':
+    get:
+      tags:
+        - Location
+      summary: Get Location By Id
+      operationId: getLocationById
+      parameters:
+        - name: locationId
+          in: path
+          description: Id of Location to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success
+          content:
+            JSON:
+              schema:
+                type: object
+                properties:
+                  longitude:
+                    type: integer
+                    format: int64
+                  latitude:
+                    type: integer
+                    format: int64
+  
   /customer/create:
     post:
       tags:
@@ -573,7 +601,6 @@ paths:
                   phoneNumber:
                     type: integer
                     format: int64
-  '/customer/edit/{customerId}':
     put:
       tags:
         - Customer
@@ -613,6 +640,65 @@ paths:
             JSON:
               schema:
                 $ref: '#/components/schemas/Customer'
+    delete:
+      tags:
+        - Customer
+      summary: Delete Customer By Id
+      operationId: delCusById
+      parameters:
+        - name: customerId
+          in: path
+          description: ID of Customer to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: delete
+  /payment/customer:
+    post:
+      tags:
+        - Payment
+      description: customer make payment
+      summary: customer make payment
+      requestBody:
+        description: payment info
+        content:
+          JSON:
+            schema:
+              type: object
+              properties:
+                customerId:
+                  type: integer
+                  format: int32
+                paymentInfo:
+                  $ref : '#/components/schemas/paymentInfo'
+      responses:
+        "200":
+          description: success
+  /payment/customer/{customerId}:
+    get:
+      tags: 
+        - Payment
+      description: get all payment history by costomer id
+      summary: get all payment history by costomer id
+      parameters: 
+        - name: customerId
+          in: path
+          description: id for get payment history
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: success
+          content:
+            JSON:
+              schema:
+                type: array
+                items:
+                  $ref : '#/components/schemas/paymentInfo'
 components:
   schemas:
     Vehicle:
@@ -752,3 +838,21 @@ components:
         phoneNumber:
           type: integer
           format: int64
+    paymentInfo:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int32
+        method:
+          type: string
+        price:
+          type: integer
+          format: int32
+        date:
+          type: string
+        status:
+          type: string
+          enum: 
+            - paid
+            - unpaid
